@@ -16,4 +16,4 @@ echo "URL = "$serverurl
 
 echo "Downloading server jar..."
 
-wget -q -O ~/tmp/minecraft_server.jar $serverurl
+wget -q -O /tmp/minecraft_server.jar $serverurl
