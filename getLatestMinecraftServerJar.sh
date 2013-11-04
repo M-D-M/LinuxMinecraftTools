@@ -5,6 +5,11 @@ downloadurl="https://minecraft.net/download"
 serverurl=""
 loc=$([[ -n $1 ]] && echo $1 || echo "/tmp/minecraft_server.jar")
 
+if [[ -a $loc ]]; then
+	echo "$loc exists -- moving to ${loc}.old"
+	mv $loc ${loc}.old
+fi
+
 echo "Grabbing minecraft download page..."
 
 curl $downloadurl > $tmpfile
