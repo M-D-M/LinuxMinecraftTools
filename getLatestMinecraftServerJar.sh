@@ -1,25 +1,20 @@
 #!/bin/bash
 
-tmpfile=/tmp/minecrafttempfile.tmp
 downloadurl="https://minecraft.net/download"
 serverurl=""
-loc=$([[ -n $1 ]] && echo $1 || echo "/tmp/minecraft_server.jar")
+loc=$([[ -n $1 ]] && printf $1 || printf "/tmp/minecraft_server.jar")
 
 if [[ -a $loc ]]; then
-	echo "$loc exists -- moving to ${loc}.old"
+	printf "$loc exists -- moving to ${loc}.old\n"
 	mv $loc ${loc}.old
 fi
 
-echo "Grabbing minecraft download page..."
+printf "Getting download URL for minecraft server...\n"
 
-curl $downloadurl > $tmpfile
+serverurl=`curl -s $downloadurl | egrep -io 'https.*versions\/(.*)\/minecraft_server.\1.jar'`
 
-echo "Getting download URL for minecraft server..."
+printf "URL = "$serverurl"\n"
 
-serverurl=`egrep -io 'https.*versions\/(.*)\/minecraft_server.\1.jar' $tmpfile`
-
-echo "URL = "$serverurl
-
-echo "Downloading server jar..."
+printf "Downloading server jar...\n"
 
 wget -q -O $loc $serverurl
