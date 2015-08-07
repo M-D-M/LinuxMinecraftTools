@@ -1,0 +1,13 @@
+import os
+
+worlds[os.environ['worldName']] = os.environ['worldLoc']
+
+renders["normalrender"] = {
+    "world": os.environ['worldName'],
+    "title": "Render of Overworld as of " + os.environ['curDate'],
+    "rendermode": "lighting"
+}
+
+outputdir = os.environ['outputDir'] + os.environ['worldName']
+
+texturepath = os.environ['textureFile']

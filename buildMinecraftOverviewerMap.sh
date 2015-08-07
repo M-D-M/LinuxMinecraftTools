@@ -1,7 +1,10 @@
 #!/bin/bash
 
 exitCode=0
-default_cfg_file=/var/tmp/share/cfg/config.txt
+defaultCfgFile=/var/tmp/share/LinuxMinecraftTools/src/config.txt
+logFileDir=${HOME}/log
+outputDir="/var/www/html/Minecraft_Maps/"
+textureFile="/var/tmp/share/LinuxMinecraftTools/src/minecraft.jar"
 
 if [ $# -lt 2  ]; then
 	printf "\nUsage: $0 [world data location] [world name] {custom config file}\n\n"
@@ -13,35 +16,29 @@ else
 	export worldName=$2
 	export worldLoc=$1
 	export curDate=`date`
+	export outputDir
+	export textureFile
 
-	exec >> ${HOME}/log/overviewer-buildlog-${worldName}.txt
+	exec >> ${logFileDir}/overviewer-buildlog-${worldName}.txt
 
 	if [[ -r $3 ]]; then
-		printf "\nCustom config file passed: " $3
+		printf "\nCustom config file passed: "$3
 		config=$3
 	else
-		config=$default_cfg_file
+		printf "\nNo custom config passed -- skipping POI creation..."
+		config=$defaultCfgFile
 	fi
 
-	echo $'\n'
-	printf "\nBeginning build operation on `date`..."
-
-	printf "\nCopying world to temp folder..."
-	cp -pr $worldLoc /tmp/${worldName}
-
-	printf "\nBuilding map at `date +%T`..."
+	printf "\nBuilding map at `date`..."
 	overviewer.py --config=$config
 
 	# Only build POI if custom config passed
 	if [[ -r $3 ]]; then
 		printf "\nBuilding POI..."
-		overviewer.py --config $config --genpoi
-	else
-		printf "\nNo custom config passed -- skipping POI creation..."
+		overviewer.py --config $config --genpoi --skip-scan
 	fi
 
 	printf "\nFinished operation at `date`..."
-	rm -rf /tmp/${worldName}
 fi
 
 exit $exitCode
