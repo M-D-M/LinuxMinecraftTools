@@ -1,6 +1,6 @@
 #!/bin/bash
 
-downloadurl="https://minecraft.net/download"
+downloadurl="https://minecraft.net/en/download/server"
 serverurl=""
 loc=$([[ -n $1 ]] && printf $1 || printf "/tmp/minecraft_server.jar")
 
