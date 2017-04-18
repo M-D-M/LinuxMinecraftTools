@@ -44,7 +44,7 @@ function grabLatestMCServerJar {
 		printf "\nSHA1 of downloaded file does not match!"
 		rm ${LOCAL_FILE}
 	else
-		printf "\nSHA1 matches!"
+		printf "\nSHA1 matches!\n"
 	fi
 }
 
