@@ -1,10 +1,11 @@
 #!/bin/bash
 
 exitCode=0
-defaultCfgFile=/var/tmp/share/LinuxMinecraftTools/src/config.txt
+_BASE_DIR=$(dirname $0)
+defaultCfgFile="${_BASE_DIR}/src/config.txt"
 logFileDir=${HOME}/log
 outputDir="/var/www/html/Minecraft_Maps/"
-textureFile="/var/tmp/share/LinuxMinecraftTools/src/minecraft.jar"
+textureFile="${_BASE_DIR}/src/minecraft_client.jar"
 
 if [ $# -lt 2  ]; then
 	printf "\nUsage: $0 [world data location] [world name] {custom config file} {only generate POI = true|false}\n\n"

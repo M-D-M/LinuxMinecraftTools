@@ -1,17 +1,21 @@
 #!/bin/bash
 
-exitCode=0
+_EXITCODE=0
+_DEFAULT_CLIENT_JAR_LOC='/tmp/minecraft_client.jar'
+_BASE_DIR=$(dirname $0)
 
-if [ $# -lt 1 ]; then
-	echo ""
-	echo "Usage: $0 [Minecraft Game Jar Version]"
-	echo ""
+function main {
+	LOCAL_FILE=$([[ -n $1 ]] && printf $1 || printf ${_DEFAULT_CLIENT_JAR_LOC})
 
-	exitCode=1
-else
-	VERSION=$1
-	mv src/minecraft.jar src/minecraft.jar.old
-	wget -O src/minecraft.jar https://s3.amazonaws.com/Minecraft.Download/versions/$VERSION/${VERSION}.jar
-fi
+	if [[ -a "${LOCAL_FILE}" ]]; then
+		printf "${LOCAL_FILE} exists -- moving to ${LOCAL_FILE}.old\n"
+		mv ${LOCAL_FILE} ${LOCAL_FILE}.old
+	fi
 
-exit $exitCode
+	VERSION=$(${_BASE_DIR}/getLatestMinecraftVersion.bash)
+	printf "\nDownloading minecraft client version ${VERSION} to ${LOCAL_FILE}..."
+	wget -q -O ${LOCAL_FILE} https://s3.amazonaws.com/Minecraft.Download/versions/${VERSION}/${VERSION}.jar
+}
+
+main "$@"
+exit $_EXITCODE
