@@ -22,7 +22,7 @@ function main {
 		mv ${LOCAL_FILE} ${LOCAL_FILE}.old
 	fi
 
-	printf "\nDownloading ${SERVER_JAR_NAME}..."
+	printf "\nDownloading ${SERVER_JAR_NAME} from ${SERVER_URL}..."
 	wget -q -O ${LOCAL_FILE} ${SERVER_URL}
 	printf "\nFile downloaded at: ${LOCAL_FILE}"
 
