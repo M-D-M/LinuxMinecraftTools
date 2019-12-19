@@ -6,8 +6,8 @@ function main {
         MCJSON=$(curl -s $__MC_JSON_URL)
         LATEST_VER=$(getJSONVal "$(getJSONData "$MCJSON" latest)" release)
 
-        LATEST_URL_DATA=$(echo $MCJSON | egrep -o "\"id\":\"${LATEST_VER}\"[^}]*")
-        LATEST_VER_URL=$(getJSONVal "$LATEST_URL_DATA" url)
+  LATEST_URL_DATA=$(echo $MCJSON | egrep -o "\"id\":\s*\"${LATEST_VER}\"[^}]*")
+  LATEST_VER_URL=$(getJSONVal "$LATEST_URL_DATA" url)
 
         MCURLJSON=$(curl -s $LATEST_VER_URL)
 	SERVER_JAR_NAME=minecraft_server_${LATEST_VER}.jar
@@ -17,6 +17,9 @@ function main {
 
 	LOCAL_FILE=$([[ -n $1 ]] && printf $1 || printf /tmp/$SERVER_JAR_NAME)
 
+  if [[ -d "${LOCAL_FILE}" ]]; then
+    LOCAL_FILE=$LOCAL_FILE/$SERVER_JAR_NAME
+  fi
 	if [[ -a "${LOCAL_FILE}" ]]; then
 		printf "${LOCAL_FILE} exists -- moving to ${LOCAL_FILE}.old\n"
 		mv ${LOCAL_FILE} ${LOCAL_FILE}.old
